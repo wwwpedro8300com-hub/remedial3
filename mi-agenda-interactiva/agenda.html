@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Agenda</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <!-- Navegación -->
+    <nav class="navbar navbar-light bg-white shadow-sm mb-4">
+        <div class="container">
+            <span class="navbar-brand">Mi Agenda</span>
+            <div class="d-flex align-items-center">
+                <span class="me-3">Bienvenido, <span id="usernameDisplay"></span></span>
+                <button id="logoutBtn" class="btn btn-outline-danger btn-sm">
+                    Cerrar Sesion
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Formulario -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Nueva Tarea</h5>
+                <form id="taskForm">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <input type="text" class="form-control" id="taskTitle" 
+                                   placeholder="Título" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="date" class="form-control" id="taskDate" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <textarea class="form-control" id="taskDescription" 
+                                  placeholder="Descripción" rows="2"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        Agregar Tarea
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Lista de tareas -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Mis Tareas</h5>
+                <div id="tasksContainer">
+                    <!-- Las tareas se cargan aquí -->
+                </div>
+                <div id="emptyState" class="text-center py-4 text-muted">
+                    No hay tareas. Agrega una arriba.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Nuestros scripts -->
+    <script src="js/auth.js"></script>
+    <script src="js/agenda.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/utils.js"></script>
+    
+    <script>
+        // Inicializar la agenda
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verificar sesión
+            verificarSesion();
+            
+            // Configurar botones
+            document.getElementById('logoutBtn').addEventListener('click', cerrarSesion);
+            document.getElementById('taskForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                guardarTarea();
+            });
+            
+            // Establecer fecha actual
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('taskDate').value = today;
+            
+            // Cargar tareas
+            cargarTareas();
+        });
+    </script>
+</body>
+</html>
